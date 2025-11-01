@@ -105,7 +105,8 @@ public class AuthService {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUser(user);
         refreshToken.setToken(UUID.randomUUID().toString());
-        refreshToken.setExpiryDate(LocalDateTime.now().plusMillis(refreshTokenExpiration));
+        // Convert milliseconds to seconds (LocalDateTime.plusSeconds expects long)
+        refreshToken.setExpiryDate(LocalDateTime.now().plusSeconds(refreshTokenExpiration / 1000));
 
         refreshToken = refreshTokenRepository.save(refreshToken);
         return refreshToken.getToken();
